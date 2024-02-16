@@ -22,12 +22,34 @@ public class LinkController {
 
     }
 
+    // @mlesniak idemptotency
     @PostMapping("/api/link")
     public CreateLinkResponse add(@RequestBody CreateLinkRequest request) {
+        String id = null;
         var sha = getSHA256(request.url);
-        links.put(sha, request.url);
-        var id = sha;
-        return new CreateLinkResponse(id, request.url, request.url);
+
+        int length = 1;
+        while (length < sha.length()) {
+            var tmpId = sha.substring(0, length);
+            var url = links.get(tmpId);
+            if (url == null) {
+                id = tmpId;
+                break;
+            }
+            if (url.equalsIgnoreCase(request.url)) {
+                id = tmpId;
+                break;
+            }
+
+            // Collision happened, increase length.
+            length++;
+        }
+        if (id == null) {
+            // @mlesniak I don't think this can happen.
+        }
+
+        links.put(id, request.url);
+        return new CreateLinkResponse(id, request.url, "http://localhost:8080/" + id);
     }
 
     @GetMapping("/{id}")
