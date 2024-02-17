@@ -1,5 +1,8 @@
 package com.mlesniak.shortener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,10 @@ import java.util.Map;
 @RestController
 public class LinkController {
     private Map<String, String> links = new HashMap<>();
+    private static Logger log = LoggerFactory.getLogger(LinkController.class);
+
+    @Value("${hostname}")
+    private String hostname;
 
     public record CreateLinkRequest(String url) {
 
@@ -45,11 +52,13 @@ public class LinkController {
             length++;
         }
         if (id == null) {
-            // @mlesniak I don't think this can happen.
+            // @mlesniak Add general error handler.
+            throw new IllegalStateException("Could not generate shortened id for url=%s".formatted(request.url));
         }
 
         links.put(id, request.url);
-        return new CreateLinkResponse(id, request.url, "http://localhost:8080/" + id);
+
+        return new CreateLinkResponse(id, request.url, hostname + "/" + id);
     }
 
     @GetMapping("/{id}")
@@ -72,7 +81,7 @@ public class LinkController {
             StringBuilder hexString = new StringBuilder();
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
-                if(hex.length() == 1) hexString.append('0');
+                if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
             return hexString.toString();
