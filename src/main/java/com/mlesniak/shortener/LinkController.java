@@ -30,10 +30,11 @@ public class LinkController {
     }
 
     // @mlesniak idemptotency
-    @PostMapping("/api/link")
+    @PostMapping("/")
     public CreateLinkResponse add(@RequestBody CreateLinkRequest request) {
         String id = null;
         var sha = getSHA256(request.url);
+        log.debug("SHA={} for {}", sha, request.url);
 
         int length = 1;
         while (length < sha.length()) {
