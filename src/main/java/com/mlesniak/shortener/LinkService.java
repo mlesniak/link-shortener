@@ -7,21 +7,22 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class LinkService {
     private static final Logger log = LoggerFactory.getLogger(LinkService.class);
-    private final Map<String, String> links = new HashMap<>();
+    LinkRepository repository;
 
     @Value("${hostname}")
     private String hostname;
 
+    public LinkService(LinkRepository repository) {
+        this.repository = repository;
+    }
+
     public Optional<Url> get(Id id) {
-        var url = links.get(id.id());
-        return Optional.ofNullable(url).map(Url::new);
+        return repository.get(id);
     }
 
     public Url create(Url url) {
@@ -32,12 +33,12 @@ public class LinkService {
         int length = 1;
         while (length < sha.length()) {
             var tmpId = sha.substring(0, length);
-            var tmpUrl = links.get(tmpId);
-            if (tmpUrl == null) {
+            var tmpUrl = repository.get(new Id(tmpId));
+            if (tmpUrl.isEmpty()) {
                 id = tmpId;
                 break;
             }
-            if (tmpUrl.equalsIgnoreCase(url.url())) {
+            if (tmpUrl.get().url().equalsIgnoreCase(url.url())) {
                 id = tmpId;
                 break;
             }
@@ -50,7 +51,7 @@ public class LinkService {
             // @mlesniak Add general comment why this can't happen.
         }
 
-        links.put(id, url.url());
+        repository.save(new Id(id), url);
         var shortUrl = "%s/%s".formatted(hostname, id);
         return new Url(shortUrl);
     }
