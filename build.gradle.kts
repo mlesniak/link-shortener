@@ -18,7 +18,9 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("software.amazon.awssdk:dynamodb:2.24.5")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
 }
 
 tasks.withType<Test> {

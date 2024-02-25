@@ -8,15 +8,17 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
+import java.net.URI;
+
 @Configuration
 public class DynamoDbConfiguration {
-    @Value("${aws.accessKeyId}")
+    @Value("${aws.accessKeyId:}")
     private String accessKey;
 
-    @Value("${aws.secretKey}")
+    @Value("${aws.secretKey:}")
     private String secretKey;
 
-    @Value("${aws.region}")
+    @Value("${aws.region:eu-central-1}")
     private String region;
 
     @Bean
@@ -24,6 +26,7 @@ public class DynamoDbConfiguration {
         return DynamoDbClient.builder()
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
+                .endpointOverride(URI.create("http://localhost:8000"))
                 .build();
     }
 }
