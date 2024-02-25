@@ -11,7 +11,6 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 import java.util.Map;
 import java.util.Optional;
 
-// @mlesniak Add testcontainer local dynamo
 @Primary
 @Repository
 public class DynamoLinkRepository implements LinkRepository {
