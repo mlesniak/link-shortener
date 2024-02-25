@@ -8,8 +8,6 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-import java.net.URI;
-
 @Configuration
 public class DynamoDbConfiguration {
     @Value("${aws.accessKeyId:}")
@@ -26,7 +24,6 @@ public class DynamoDbConfiguration {
         return DynamoDbClient.builder()
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
-                .endpointOverride(URI.create("http://localhost:8000"))
                 .build();
     }
 }
