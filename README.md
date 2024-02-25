@@ -7,3 +7,9 @@ api gateway
 cloud formation
 TTL
 Simple frontend w/ Angular
+
+create docker container
+spawn ecs instance where a docker instance is running?
+or fargate / more expensive?
+
+easiest solution?
