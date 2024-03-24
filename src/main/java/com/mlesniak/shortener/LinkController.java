@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RestController
+@RestController("/api")
 public class LinkController {
     private final LinkService linkService;
 

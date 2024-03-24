@@ -1,0 +1,15 @@
+<div class="contact" id="contact-{{id}}" style="display: flex">
+    <div hx-indicator="#c-{{id}}" hx-target="#contact-{{id}}" hx-swap="outerHTML swap:500ms" hx-delete="/contacts/{{ id }}"
+         style="width: 1.5rem; cursor: pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M9 3v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5V3h-6zm3 0h2v1h-2V3zm-1 6h2v9h-2V9zm-4 0h2v9H7V9zm8 0h2v9h-2V9z"/>
+        </svg>
+    </div>
+    Name: <span>{{ name }} </span>
+    Email: <span>{{ email }}</span>
+
+    <div id="c-{{id}}" class="htmx-indicator">
+        <img src="/images/bars.svg" style="width: 1rem" alt="loading"/>
+    </div>
+</div>

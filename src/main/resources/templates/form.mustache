@@ -1,0 +1,12 @@
+<form hx-swap="outerhtml" hx-post="/contacts">
+    name: <input
+        {{#values.name}}value="{{values.name}}"{{/values.name}}
+        type="text" name="name" autofocus/>
+    email: <input
+        {{#values.email}}value="{{values.email}}"{{/values.email}}
+        type="text" name="email"/>
+    {{#errors.email}}
+        <div style="color: red">{{errors.email}}</div>
+    {{/errors.email}}
+    <button type="submit">Create contact</button>
+</form>
