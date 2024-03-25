@@ -6,31 +6,29 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11"
+            integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0"
+            crossorigin="anonymous"></script>
+    <script src="htmx.js"></script>
     <link rel="stylesheet" href="css/index.css">
 
 </head>
 <body>
 
-{{#formData}}
-    {{> form }}
-{{/formData}}
-<hr/>
-{{#data}}
-    {{> display }}
-{{/data}}
+<form hx-swap="outerhtml" hx-post="/link">
+    url <input type="text" name="url" autofocus {{#url}}value="{{url}}" {{/url}}/>
+    {{#error}}
+        <div style="color: red">{{error}}</div>
+    {{/error}}
+    <button type="submit">Create short link</button>
+</form>
+
+{{#shortLink}}
+    Shortened Link <a href="{{shortLink}}">{{shortLink}}</a>
+    <!-- Add copy to clipboard button -->
+{{/shortLink}}
+
 <script>
-    htmx.on('htmx:beforeSwap', function (evt) {
-        if (evt.detail.xhr.status === 422) {
-            // allow 422 responses to swap as we are using this as a signal that
-            // a form was submitted with bad data and want to rerender with the
-            // errors
-            //
-            // set isError to false to avoid error logging in console
-            evt.detail.shouldSwap = true;
-            evt.detail.isError = false;
-        }
-    });
 </script>
 </body>
 </html>

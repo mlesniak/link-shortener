@@ -22,9 +22,11 @@ public class LinkService {
     }
 
     public Optional<Url> get(Id id) {
+        log.info("get({})", id);
         return repository.get(id);
     }
 
+    // @mlesniak DoS Protection: if we store more than 1k links, do not create one.
     public Url create(Url url) {
         String id = null;
         var sha = getSHA256(url.url());
@@ -51,7 +53,15 @@ public class LinkService {
             // @mlesniak Add general comment why this can't happen.
         }
 
-        repository.save(new Id(id), url);
+        var fixedUrl = url;
+        if (!url.url().startsWith("http")) {
+            // We could use https, but not every website provides
+            // an https endpoint and the good ones redirect from
+            // http to https anyway.
+            fixedUrl = new Url("http://" + url.url());
+        }
+
+        repository.save(new Id(id), fixedUrl);
         var shortUrl = "%s/%s".formatted(hostname, id);
         return new Url(shortUrl);
     }
