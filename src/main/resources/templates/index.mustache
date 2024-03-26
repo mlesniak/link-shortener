@@ -15,8 +15,8 @@
 </head>
 <body>
 
-<form hx-swap="outerhtml" hx-post="/link">
-    url <input type="text" name="url" autofocus {{#url}}value="{{url}}" {{/url}}/>
+<form hx-swap="outerhtml" hx-post="/link" style="flex-direction: column">
+    URL to shorten <input type="text" name="url" autofocus {{#url}}value="{{url}}" {{/url}}/>
     {{#error}}
         <div style="color: red">{{error}}</div>
     {{/error}}
@@ -24,8 +24,10 @@
 </form>
 
 {{#shortLink}}
+    <div class="shortened-link">
     Shortened Link <a href="{{shortLink}}">{{shortLink}}</a>
     <!-- Add copy to clipboard button -->
+    </div>
 {{/shortLink}}
 
 <script>

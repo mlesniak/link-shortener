@@ -1,15 +1,56 @@
-.htmx-indicator {
-    opacity:0;
-    transition: opacity 500ms ease-in;
-}
-.htmx-request .htmx-indicator{
-    opacity:1
-}
-.htmx-request.htmx-indicator{
-    opacity:1
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
-.contact.htmx-swapping {
-    opacity: 0;
-    transition: opacity 500ms ease-in;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* This will make the children stretch to fill the width */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+input[type="text"], button[type="submit"] {
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    flex-grow: 1; /* Takes the remaining space */
+}
+
+button[type="submit"] {
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+.shortened-link {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #d6e9c6;
+    border-radius: 4px;
+    word-break: break-all;
+    width: 300px;
+
 }

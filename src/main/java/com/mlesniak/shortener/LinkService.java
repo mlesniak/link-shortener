@@ -32,6 +32,14 @@ public class LinkService {
         var sha = getSHA256(url.url());
         log.debug("SHA={} for {}", sha, url.url());
 
+        var fixedUrl = url;
+        if (!url.url().startsWith("http")) {
+            // We could use https, but not every website provides
+            // a https endpoint and the good ones redirect from
+            // http to https anyway.
+            fixedUrl = new Url("http://" + url.url());
+        }
+
         int length = 1;
         while (length < sha.length()) {
             var tmpId = sha.substring(0, length);
@@ -40,7 +48,7 @@ public class LinkService {
                 id = tmpId;
                 break;
             }
-            if (tmpUrl.get().url().equalsIgnoreCase(url.url())) {
+            if (tmpUrl.get().url().equalsIgnoreCase(fixedUrl.url())) {
                 id = tmpId;
                 break;
             }
@@ -51,14 +59,6 @@ public class LinkService {
         if (id == null) {
             // @mlesniak Add general error handler.
             // @mlesniak Add general comment why this can't happen.
-        }
-
-        var fixedUrl = url;
-        if (!url.url().startsWith("http")) {
-            // We could use https, but not every website provides
-            // an https endpoint and the good ones redirect from
-            // http to https anyway.
-            fixedUrl = new Url("http://" + url.url());
         }
 
         repository.save(new Id(id), fixedUrl);
