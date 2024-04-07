@@ -15,20 +15,22 @@
 </head>
 <body>
 
-<form hx-swap="outerhtml" hx-post="/link" style="flex-direction: column">
-    URL to shorten <input type="text" name="url" autofocus {{#url}}value="{{url}}" {{/url}}/>
+<form hx-swap="outerhtml" hx-target="body" hx-post="/link" style="flex-direction: column">
+    <input type="text" name="url" autofocus {{#url}}value="{{url}}" {{/url}}/>
     {{#error}}
         <div style="color: red">{{error}}</div>
     {{/error}}
     <button type="submit">Create short link</button>
+    {{#shortLink}}
+        <div class="shortened-link">
+            <a href="{{shortLink}}">{{shortLink}}</a>
+            <!-- Add copy to clipboard button -->
+            <button id="copyButton">
+                <img src="images/copy.png" width="16" height="16" alt="Copy to clipboard"/>
+            </button>
+        </div>
+    {{/shortLink}}
 </form>
-
-{{#shortLink}}
-    <div class="shortened-link">
-    Shortened Link <a href="{{shortLink}}">{{shortLink}}</a>
-    <!-- Add copy to clipboard button -->
-    </div>
-{{/shortLink}}
 
 <script>
 </script>
